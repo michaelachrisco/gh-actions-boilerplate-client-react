@@ -3,6 +3,7 @@ provider "aws" {
   profile = var.profile
   region  = "us-east-1"
 
+  // Breaks AWS SSO changes
   assume_role {
     role_arn = var.assume_role_arn
   }
