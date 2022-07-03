@@ -1,7 +1,7 @@
 import { useAppDispatch } from 'app/redux';
 import { useLoginMutation } from 'common/api/authApi';
 import { handleApiError, isFetchBaseQueryError } from 'common/api/handleApiError';
-import { useCallback } from 'react';
+import { useCallback, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import * as authLocalStorage from '../authLocalStorage';
 import { authSlice } from '../authSlice';
