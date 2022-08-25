@@ -120,5 +120,10 @@ export const GlobalStyle = createGlobalStyle<{ theme: typeof dark }>`
         background-color: ${({ theme }) => theme.backgroundColor};
     }
 
+    .in-app-notification {
+        color: black;
+        font-size: 1rem;
+    }
+
 `;
 export default GlobalStyle;

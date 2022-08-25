@@ -1,7 +1,7 @@
 import { IconName } from '@fortawesome/fontawesome-svg-core';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { FC, PropsWithChildren } from 'react';
-import { NavItem } from 'react-bootstrap';
+import { Badge, NavItem } from 'react-bootstrap';
 import { useLocation, useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import { NavLinkConfig } from '../hooks/useNavLinks';
@@ -9,6 +9,7 @@ import { NavLinkConfig } from '../hooks/useNavLinks';
 type Props = {
   link: NavLinkConfig;
   handleSamePathNavigate?: () => void;
+  badge?: string;
 };
 
 const NavLinkStyles = styled.div`
@@ -24,8 +25,15 @@ const NavLinkStyles = styled.div`
     left: 1rem;
     top: 0.9rem;
   }
-  span {
+  p {
     padding-left: 1.5rem;
+    margin: 0;
+  }
+  .badge {
+    position: absolute;
+    right: 0.25rem;
+    top: 50%;
+    transform: translateY(-50%);
   }
   color: ${props => props.theme.nav.textColor};
   font-weight: 400;
@@ -39,7 +47,7 @@ const NavLinkStyles = styled.div`
   }
 `;
 
-export const CustomNavLink: FC<PropsWithChildren<Props>> = ({ link, handleSamePathNavigate = null }) => {
+export const CustomNavLink: FC<PropsWithChildren<Props>> = ({ link, badge, handleSamePathNavigate = null }) => {
   const navigate = useNavigate();
   const location = useLocation();
 
@@ -57,7 +65,12 @@ export const CustomNavLink: FC<PropsWithChildren<Props>> = ({ link, handleSamePa
     <NavLinkStyles onClick={handleClick} className={isActive ? 'active' : ''}>
       <div>
         <FontAwesomeIcon icon={link.icon} />
-        <span>{link.label}</span>
+        <p>{link.label}</p>
+        {badge ? (
+          <Badge pill bg='danger'>
+            {badge}
+          </Badge>
+        ) : null}
       </div>
     </NavLinkStyles>
   );
@@ -70,6 +83,6 @@ export const CustomNavAction: FC<{
 }> = ({ icon, label, onClick }) => (
   <NavLinkStyles as={NavItem} onClick={onClick}>
     <FontAwesomeIcon icon={icon} />
-    <span>{label}</span>
+    <p>{label}</p>
   </NavLinkStyles>
 );

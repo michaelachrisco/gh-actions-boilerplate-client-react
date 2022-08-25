@@ -4,6 +4,7 @@ import {
   faBan,
   faBars,
   faBuilding,
+  faBell,
   faCheck,
   faChevronLeft,
   faChevronRight,
@@ -49,6 +50,7 @@ import { environment } from 'environment';
 library.add(
   faBan,
   faBars,
+  faBell,
   faBuilding,
   faCheck,
   faChevronLeft,
