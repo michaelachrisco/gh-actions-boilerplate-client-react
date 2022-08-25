@@ -1,16 +1,17 @@
 import { IconName } from '@fortawesome/fontawesome-svg-core';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { FC, PropsWithChildren } from 'react';
-import { Nav, NavItem } from 'react-bootstrap';
+import { Badge, Nav, NavItem } from 'react-bootstrap';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { NavLinkConfig } from '../hooks/useNavLinks';
 
 type Props = {
   link: NavLinkConfig;
   handleSamePathNavigate?: () => void;
+  badge?: string;
 };
 
-export const CustomNavLink: FC<PropsWithChildren<Props>> = ({ link, handleSamePathNavigate = null }) => {
+export const CustomNavLink: FC<PropsWithChildren<Props>> = ({ link, badge, handleSamePathNavigate = null }) => {
   const navigate = useNavigate();
   const location = useLocation();
 
@@ -28,6 +29,11 @@ export const CustomNavLink: FC<PropsWithChildren<Props>> = ({ link, handleSamePa
     <Nav.Link onClick={handleClick} className={isActive ? 'active' : ''}>
       <FontAwesomeIcon className='me-2' icon={link.icon} />
       {link.label}
+      {badge ? (
+        <Badge pill bg='danger'>
+          {badge}
+        </Badge>
+      ) : null}
     </Nav.Link>
   );
 };
@@ -40,5 +46,5 @@ export const CustomNavAction: FC<{
   <NavItem onClick={onClick}>
     <FontAwesomeIcon icon={icon} />
     <span>{label}</span>
-  </NavItem>
+  </NavLinkStyles>
 );

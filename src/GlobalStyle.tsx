@@ -158,5 +158,10 @@ export const GlobalStyle = createGlobalStyle<{ theme: typeof dark }>`
         box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
     }
 
+    .in-app-notification {
+        color: black;
+        font-size: 1rem;
+    }
+
 `;
 export default GlobalStyle;
