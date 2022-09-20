@@ -74,7 +74,7 @@ export const NotificationListView: FC = () => {
           </p>
         </div>
         <div>
-          <LoadingButton onClick={() => markRead()} as={Button} loading={isLoading}>
+          <LoadingButton onClick={() => markRead()} loading={isLoading}>
             Mark all Read
           </LoadingButton>
         </div>

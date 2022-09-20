@@ -46,5 +46,5 @@ export const CustomNavAction: FC<{
   <NavItem onClick={onClick}>
     <FontAwesomeIcon icon={icon} />
     <span>{label}</span>
-  </NavLinkStyles>
+  </NavItem>
 );
