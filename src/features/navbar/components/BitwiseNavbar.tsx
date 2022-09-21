@@ -4,10 +4,11 @@ import { LoadingButton } from 'common/components/LoadingButton';
 import { environment } from 'environment';
 import { EnvironmentConfiguration } from 'environment/types';
 import { useAuth, useLogout } from 'features/auth/hooks';
+import { NotificationContext } from 'features/notifications/context';
 import { MoonIcon } from 'features/themes/MoonIcon';
 import { SunIcon } from 'features/themes/SunIcon';
 import { useTheme } from 'features/themes/useTheme';
-import { FC } from 'react';
+import { FC, useContext } from 'react';
 import { Badge, Button, Container, Modal, Navbar, NavDropdown, NavLink, Offcanvas } from 'react-bootstrap';
 import Nav from 'react-bootstrap/Nav';
 import { useTranslation } from 'react-i18next';
@@ -158,6 +159,7 @@ const StyledNavbarOffcanvas = styled(Navbar.Offcanvas)`
 export const BitwiseNavbar: FC<Props> = ({ closeVerticalNav }) => {
   let dropdownLinks: NavLinkConfig[] = [];
 
+  const { notifications } = useContext(NotificationContext);
   const { user } = useAuth();
   const navLinks = useNavLinks();
   const navigate = useNavigate();
@@ -252,6 +254,15 @@ export const BitwiseNavbar: FC<Props> = ({ closeVerticalNav }) => {
                 <NavDropdown.Item onClick={() => changeLanguage(option.value)}>{option.label}</NavDropdown.Item>
               ))}
             </NavDropdown>
+
+            <CustomNavLink
+              link={{
+                id: 99,
+                icon: 'bell',
+                label: notifications.length.toString(),
+                path: '/notifications',
+                // badge: count.toString()
+              }} />
 
             {user ? (
               <NavDropdown
