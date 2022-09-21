@@ -3,7 +3,7 @@ import { AppNotification } from 'common/models/notifications';
 import { environment } from 'environment';
 import { useAuth } from 'features/auth/hooks';
 import * as NotificationComponents from 'features/notifications/components';
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useMemo, useReducer, useState } from 'react';
 import { toast } from 'react-toastify';
 
 const initialNotificationState = {
@@ -25,16 +25,16 @@ interface NotificationAction {
   unreadNotifications?: AppNotification[];
 }
 
-const notificationReducer = (state: NotificationStateType, action: NotificationAction) => {
+const notificationReducer = (state: NotificationStateType, action: NotificationAction): NotificationStateType => {
   switch (action.type) {
     case 'clear':
       return initialNotificationState;
     case 'getMore':
-      return { ...state, nextNotificationUrl: action.nextNotificationUrl };
+      return { ...state, nextNotificationUrl: action.nextNotificationUrl ?? null };
     case 'received notification SSE':
-      return { ...state, notifications: [ action.notification, ...state.notifications ] };
+      return { ...state, notifications: action.notification ? [ action.notification, ...state.notifications ] : state.notifications };
     case 'received new notifications':
-      return { ...state, oldNotifications: [ ...state.oldNotifications, action.unreadNotifications ] };
+      return { ...state, oldNotifications: action.unreadNotifications ? [ ...state.oldNotifications, ...action.unreadNotifications ] : state.oldNotifications };
     default:
       throw new Error();
   }
@@ -43,9 +43,11 @@ const notificationReducer = (state: NotificationStateType, action: NotificationA
 export const useLiveNotifications = () => {
   const { user } = useAuth();
 
-  const [notifications, setNotifications] = useState<AppNotification[]>([]);
-  const [oldNotifications, setOldNotifications] = useState<AppNotification[]>([]);
-  const [nextNotificationUrl, setNextNotificationUrl] = useState<string | null>(null);
+  const [notificationState, notificationDispatch] = useReducer(notificationReducer, initialNotificationState);
+
+  // const [notifications, setNotifications] = useState<AppNotification[]>([]);
+  // const [oldNotifications, setOldNotifications] = useState<AppNotification[]>([]);
+  // const [nextNotificationUrl, setNextNotificationUrl] = useState<string | null>(null);
 
   const {
     data: unreadNotifications,
