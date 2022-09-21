@@ -99,7 +99,7 @@ export const useLiveNotifications = () => {
     console.log('RE-EVALUATE');
     const result = {
       notifications: [...notificationState.notifications, ...notificationState.oldNotifications],
-      count: notificationState.notifications.length + (unreadNotifications?.meta.count || 0), // I'm not so sure this is right.
+      count: notificationState.notifications.length + (unreadNotifications?.meta.count || 0),
       hasMore: !!unreadNotifications?.links.next,
       isFetching,
       isLoading,
