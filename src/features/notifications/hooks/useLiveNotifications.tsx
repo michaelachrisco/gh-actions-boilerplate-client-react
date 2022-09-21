@@ -6,6 +6,40 @@ import * as NotificationComponents from 'features/notifications/components';
 import { useEffect, useMemo, useState } from 'react';
 import { toast } from 'react-toastify';
 
+const initialNotificationState = {
+  notifications: [] as AppNotification[],
+  oldNotifications: [] as AppNotification[],
+  nextNotificationUrl: null
+}
+
+interface NotificationStateType {
+  notifications: AppNotification[];
+  oldNotifications: AppNotification[];
+  nextNotificationUrl: string | null;
+}
+
+interface NotificationAction {
+  type: string;
+  notification?: AppNotification;
+  nextNotificationUrl?: string;
+  unreadNotifications?: AppNotification[];
+}
+
+const notificationReducer = (state: NotificationStateType, action: NotificationAction) => {
+  switch (action.type) {
+    case 'clear':
+      return initialNotificationState;
+    case 'getMore':
+      return { ...state, nextNotificationUrl: action.nextNotificationUrl };
+    case 'received notification SSE':
+      return { ...state, notifications: [ action.notification, ...state.notifications ] };
+    case 'received new notifications':
+      return { ...state, oldNotifications: [ ...state.oldNotifications, action.unreadNotifications ] };
+    default:
+      throw new Error();
+  }
+}
+
 export const useLiveNotifications = () => {
   const { user } = useAuth();
 
@@ -33,6 +67,8 @@ export const useLiveNotifications = () => {
     if (user) {
       eventSource = new EventSource(`${environment.apiRoute}/events/${user!.id}/`, { withCredentials: true });
       eventSource.onmessage = message => {
+        console.log('message received');
+        console.log('data:', message.data);
         const payload = JSON.parse(message.data);
         setNotifications(n => [payload, ...n]);
 
