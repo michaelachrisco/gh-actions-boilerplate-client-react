@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { Container } from 'react-bootstrap';
+import { Container, Nav } from 'react-bootstrap';
 
 export const PageWrapper = styled.div`
   height: 100%;
@@ -59,6 +59,25 @@ export const PageHeader = styled.div`
       font-size: 2rem;
       margin: 0;
       margin-bottom: 0.25rem;
+    }
+  }
+`;
+
+export const PageNav = styled(Nav)`
+  flex-direction: column;
+  margin-bottom: 1rem;
+  margin-right: 1rem;
+
+  a {
+    margin-bottom: 0.5rem;
+    color: ${props => props.theme.textColor};
+    padding: 0.5rem 1rem;
+    border-radius: ${props => props.theme.borderRadius};
+
+    &.active {
+      font-weight: 500;
+      background: ${props => props.theme.buttons.primaryBackgroundColor};
+      color: ${props => props.theme.buttons.primaryTextColor};
     }
   }
 `;

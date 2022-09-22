@@ -6,7 +6,7 @@ import {
   useChangePasswordMutation,
   useResendChangeEmailVerificationEmailMutation,
 } from 'common/api/userApi';
-import { PageCrumb, PageHeader } from 'common/styles/page';
+import { PageCrumb, PageHeader, PageNav } from 'common/styles/page';
 import { ServerValidationErrors } from 'common/models';
 import * as notificationService from 'common/services/notification';
 import {
@@ -20,10 +20,9 @@ import {
   useUpdateUserProfile,
 } from 'features/user-profile/hooks';
 import { FC, useState } from 'react';
-import { Alert, Col, Container, Nav, Row } from 'react-bootstrap';
+import { Alert, Col, Container, Row } from 'react-bootstrap';
 import Button from 'react-bootstrap/Button';
 import { Link, useParams } from 'react-router-dom';
-import styled from 'styled-components';
 import { ProfilePictureFormData, UpdateProfilePictureForm } from '../components/UpdateProfilePictureForm';
 import { UpdateUserEmailForm, UserEmailFormData } from '../components/UpdateUserEmailForm';
 import { UserProfilePicture } from 'features/navbar/components/UserProfilePicture';
@@ -34,24 +33,6 @@ import { Trans } from 'react-i18next';
 type RouteParams = {
   id: string;
 };
-
-const ProfileNav = styled(Nav).attrs({ className: 'flex-column' })`
-  margin-bottom: 1rem;
-  margin-right: 1rem;
-
-  a {
-    margin-bottom: 0.5rem;
-    color: ${props => props.theme.textColor};
-    padding: 0.5rem 1rem;
-    border-radius: ${props => props.theme.borderRadius};
-
-    &.active {
-      font-weight: 500;
-      background: ${props => props.theme.buttons.primaryBackgroundColor};
-      color: ${props => props.theme.buttons.primaryTextColor};
-    }
-  }
-`;
 
 export const UpdateUserProfilePage: FC = () => {
   const { id = '' } = useParams<RouteParams>();
@@ -174,14 +155,14 @@ export const UpdateUserProfilePage: FC = () => {
 
       <Row>
         <Col md={3}>
-          <ProfileNav defaultActiveKey='/home'>
-            <ProfileNav.Link onClick={() => setTab('profile')} className={tab === 'profile' ? 'active' : ''}>
+          <PageNav defaultActiveKey='/home'>
+            <PageNav.Link onClick={() => setTab('profile')} className={tab === 'profile' ? 'active' : ''}>
               <Trans i18nKey='userProfile.profile'>Profile</Trans>
-            </ProfileNav.Link>
-            <ProfileNav.Link onClick={() => setTab('security')} className={tab === 'security' ? 'active' : ''}>
+            </PageNav.Link>
+            <PageNav.Link onClick={() => setTab('security')} className={tab === 'security' ? 'active' : ''}>
               <Trans i18nKey='userProfile.security'>Security and Password</Trans>
-            </ProfileNav.Link>
-          </ProfileNav>
+            </PageNav.Link>
+          </PageNav>
         </Col>
 
         <Col>
