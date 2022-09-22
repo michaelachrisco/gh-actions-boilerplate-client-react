@@ -30,7 +30,7 @@ export const ThemeContext = createContext({
 
 export const App: FC = () => {
   const { user } = useAuth();
-  const { clear } = useContext(NotificationContext);
+  const { unreadNotificationsContext, readNotificationsContext } = useContext(NotificationContext);
   const [theme, setTheme] = useState('light');
 
   const themeProviderValue = useMemo(() => {
@@ -47,7 +47,8 @@ export const App: FC = () => {
   useEffect(() => {
     if (!user) {
       console.log('CLEAR');
-      clear();
+      unreadNotificationsContext.clear();
+      readNotificationsContext.clear();
     }
   }, [user]);
 

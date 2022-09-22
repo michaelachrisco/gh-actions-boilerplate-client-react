@@ -12,92 +12,93 @@ import * as NotificationComponents from '../components';
 import { NotificationContext } from '../context';
 
 export const NotificationListView: FC = () => {
-  const scrollElement = useRef<HTMLDivElement>(null);
-  const {
-    notifications,
-    hasMore,
-    isFetching,
-    isLoading: isNotificationsLoading,
-    getMore,
-    clear,
-  } = useContext(NotificationContext);
+  // const scrollElement = useRef<HTMLDivElement>(null);
+  // const {
+  //   notifications,
+  //   hasMore,
+  //   isFetching,
+  //   isLoading: isNotificationsLoading,
+  //   getMore,
+  //   clear,
+  // } = useContext(NotificationContext);
 
-  const [markAllRead, { isLoading }] = useMarkAllReadMutation();
+  // const [markAllRead, { isLoading }] = useMarkAllReadMutation();
 
-  const markRead = async () => {
-    await markAllRead();
-    clear();
-  };
+  // const markRead = async () => {
+  //   await markAllRead();
+  //   clear();
+  // };
 
-  useEffect(() => {
-    if (isNotificationsLoading)
-      return () => {
-        console.log('not loaded yet');
-      };
+  // useEffect(() => {
+  //   if (isNotificationsLoading)
+  //     return () => {
+  //       console.log('not loaded yet');
+  //     };
 
-    const element = scrollElement.current;
+  //   const element = scrollElement.current;
 
-    const observer = new IntersectionObserver(entries => {
-      const [entry] = entries;
-      if (entry.isIntersecting && hasMore) getMore();
-    }, {});
-    if (element) observer.observe(element);
+  //   const observer = new IntersectionObserver(entries => {
+  //     const [entry] = entries;
+  //     if (entry.isIntersecting && hasMore) getMore();
+  //   }, {});
+  //   if (element) observer.observe(element);
 
-    return () => {
-      if (element) observer.unobserve(element);
-    };
-  }, [scrollElement, getMore, hasMore, isNotificationsLoading, isFetching, notifications]);
+  //   return () => {
+  //     if (element) observer.unobserve(element);
+  //   };
+  // }, [scrollElement, getMore, hasMore, isNotificationsLoading, isFetching, notifications]);
 
-  const renderNotification = (notification: AppNotification) => {
-    // Dynamic dispatch.
-    const Component = (NotificationComponents as any)[notification.type];
-    console.assert(
-      Component,
-      `Could not find notification display component ${notification.type} in notifications/components.tsx\nMake sure to define a handler in that file`,
-    );
-    if (!Component) {
-      // No component for type found.
-      return <></>;
-    }
-    return <Component notification={notification} />;
-  };
+  // const renderNotification = (notification: AppNotification) => {
+  //   // Dynamic dispatch.
+  //   const Component = (NotificationComponents as any)[notification.type];
+  //   console.assert(
+  //     Component,
+  //     `Could not find notification display component ${notification.type} in notifications/components.tsx\nMake sure to define a handler in that file`,
+  //   );
+  //   if (!Component) {
+  //     // No component for type found.
+  //     return <></>;
+  //   }
+  //   return <Component notification={notification} />;
+  // };
 
-  return (
-    <SmallContainer>
-      <PageHeader>
-        <div>
-          <h1>
-            <Trans i18nKey='notifications.title'>My Notifications</Trans>
-          </h1>
-          <p>
-            <Trans i18nKey='notification.subheading'>Notifications that have been sent to me.</Trans>
-          </p>
-        </div>
-        <div>
-          <LoadingButton onClick={() => markRead()} loading={isLoading}>
-            Mark all Read
-          </LoadingButton>
-        </div>
-      </PageHeader>
+  // return (
+  //   <SmallContainer>
+  //     <PageHeader>
+  //       <div>
+  //         <h1>
+  //           <Trans i18nKey='notifications.title'>My Notifications</Trans>
+  //         </h1>
+  //         <p>
+  //           <Trans i18nKey='notification.subheading'>Notifications that have been sent to me.</Trans>
+  //         </p>
+  //       </div>
+  //       <div>
+  //         <LoadingButton onClick={() => markRead()} loading={isLoading}>
+  //           Mark all Read
+  //         </LoadingButton>
+  //       </div>
+  //     </PageHeader>
 
-      {!isNotificationsLoading && notifications.length === 0 ? (
-        <Card>
-          <NoContent>
-            <FontAwesomeIcon className='text-muted' size='2x' icon={['fas', 'bell']} />
-            <p className='lead mb-0'>No Notifications</p>
-          </NoContent>
-        </Card>
-      ) : null}
+  //     {!isNotificationsLoading && notifications.length === 0 ? (
+  //       <Card>
+  //         <NoContent>
+  //           <FontAwesomeIcon className='text-muted' size='2x' icon={['fas', 'bell']} />
+  //           <p className='lead mb-0'>No Notifications</p>
+  //         </NoContent>
+  //       </Card>
+  //     ) : null}
 
-      {notifications.map(notification => (
-        <Card key={notification.id} className='mb-3'>
-          <Card.Body>{renderNotification(notification)}</Card.Body>
-        </Card>
-      ))}
+  //     {notifications.map(notification => (
+  //       <Card key={notification.id} className='mb-3'>
+  //         <Card.Body>{renderNotification(notification)}</Card.Body>
+  //       </Card>
+  //     ))}
 
-      <div hidden={!hasMore} ref={scrollElement}>
-        <LoadingSpinner />
-      </div>
-    </SmallContainer>
-  );
+  //     <div hidden={!hasMore} ref={scrollElement}>
+  //       <LoadingSpinner />
+  //     </div>
+  //   </SmallContainer>
+  // );
+  return <></>;
 };

@@ -1,6 +1,7 @@
 import { AppNotification } from 'common/models/notifications';
 import { createContext, FC, PropsWithChildren } from 'react';
 import { useLiveNotifications } from './hooks/useLiveNotifications';
+import { useNotifications } from './hooks/useNotifications';
 
 export interface NotificationContextType {
   notifications: AppNotification[];
@@ -12,7 +13,7 @@ export interface NotificationContextType {
   clear: () => void;
 };
 
-export const NotificationContext = createContext<NotificationContextType>({
+const initialNotificationContextState = {
   notifications: [],
   count: 0,
   hasMore: false,
@@ -22,10 +23,34 @@ export const NotificationContext = createContext<NotificationContextType>({
   getMore: () => {},
   // eslint-disable-next-line @typescript-eslint/no-empty-function
   clear: () => {},
+}
+
+// export const NotificationContext = createContext<NotificationContextType>({
+//   notifications: [],
+//   count: 0,
+//   hasMore: false,
+//   isFetching: false,
+//   isLoading: true,
+//   // eslint-disable-next-line @typescript-eslint/no-empty-function
+//   getMore: () => {},
+//   // eslint-disable-next-line @typescript-eslint/no-empty-function
+//   clear: () => {},
+// });
+
+export const NotificationContext = createContext<{
+  unreadNotificationsContext: NotificationContextType,
+  readNotificationsContext: NotificationContextType
+ }>({ 
+  unreadNotificationsContext: initialNotificationContextState, 
+  readNotificationsContext: initialNotificationContextState 
 });
 
 export const NotificationsProvider: FC<PropsWithChildren<unknown>> = ({ children }) => {
-  const notificationProviderValue = useLiveNotifications();
+  // const notificationProviderValue = useLiveNotifications();
+  const notificationProviderValue = {
+    unreadNotificationsContext: useNotifications('unread'),
+    readNotificationsContext: useNotifications('read')
+  };
 
   return <NotificationContext.Provider value={notificationProviderValue}>{children}</NotificationContext.Provider>;
 };

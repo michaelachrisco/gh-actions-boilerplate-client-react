@@ -14,7 +14,7 @@ import { NotificationListViewNew } from './NotificationListViewNew';
 
 export const NotificationsPage: FC = () => {
   
-  const unreadNotificationsContext = useContext(NotificationContext);
+  const { unreadNotificationsContext, readNotificationsContext } = useContext(NotificationContext);
 
   const [tab, setTab] = useState('unread');
   const [markAllRead, { isLoading }] = useMarkAllReadMutation();
@@ -54,7 +54,7 @@ export const NotificationsPage: FC = () => {
             <PageNav.Link onClick={() => setTab('read')} className={tab === 'read' ? 'active' : ''}>
               Read{' '}
               <Badge className='ms-1 me-2' pill bg='secondary'>
-                0
+                { readNotificationsContext.count }
               </Badge>
             </PageNav.Link>
           </PageNav>
@@ -71,7 +71,7 @@ export const NotificationsPage: FC = () => {
 
             {tab === 'read' ? (
               // read listview
-              <div>Read</div>
+              <NotificationListViewNew notificationContext={readNotificationsContext} />
             ) : (
               ''
             )}
