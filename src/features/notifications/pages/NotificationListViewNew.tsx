@@ -15,11 +15,11 @@ interface Props {
     notificationContext: NotificationContextType;
 }
 
-export const NotificationListViewNew: FC<Props> = ({ notificationContext }) => {
+export const NotificationListViewNew: FC<Props> = ({ notificationContext: { notifications, hasMore, isFetching, isLoading, getMore } }) => {
   const scrollElement = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    if (notificationContext.isLoading)
+    if (isLoading)
       return () => {
         console.log('not loaded yet');
       };
@@ -28,14 +28,14 @@ export const NotificationListViewNew: FC<Props> = ({ notificationContext }) => {
 
     const observer = new IntersectionObserver(entries => {
       const [entry] = entries;
-      if (entry.isIntersecting && notificationContext.hasMore) notificationContext.getMore();
+      if (entry.isIntersecting && hasMore) getMore();
     }, {});
     if (element) observer.observe(element);
 
     return () => {
       if (element) observer.unobserve(element);
     };
-  }, [scrollElement, notificationContext.getMore, notificationContext.hasMore, notificationContext.isLoading, notificationContext.isFetching, notificationContext.notifications]);
+  }, [scrollElement, getMore, hasMore, isLoading, isFetching, notifications]);
 
   const renderNotification = (notification: AppNotification) => {
     // Dynamic dispatch.
@@ -53,7 +53,7 @@ export const NotificationListViewNew: FC<Props> = ({ notificationContext }) => {
 
   return (
     <>
-      {!notificationContext.isLoading && notificationContext.notifications.length === 0 ? (
+      {!isLoading && notifications.length === 0 ? (
         <Card>
           <NoContent>
             <FontAwesomeIcon className='text-muted' size='2x' icon={['fas', 'bell']} />
@@ -62,13 +62,13 @@ export const NotificationListViewNew: FC<Props> = ({ notificationContext }) => {
         </Card>
       ) : null}
 
-      {notificationContext.notifications.map(notification => (
+      {notifications.map(notification => (
         <Card key={notification.id} className='mb-3'>
           <Card.Body>{renderNotification(notification)}</Card.Body>
         </Card>
       ))}
 
-      <div hidden={!notificationContext.hasMore} ref={scrollElement}>
+      <div hidden={!hasMore} ref={scrollElement}>
         <LoadingSpinner />
       </div>
     </>
