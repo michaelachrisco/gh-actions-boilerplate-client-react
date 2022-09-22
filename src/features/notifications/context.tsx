@@ -2,7 +2,7 @@ import { AppNotification } from 'common/models/notifications';
 import { createContext, FC, PropsWithChildren } from 'react';
 import { useLiveNotifications } from './hooks/useLiveNotifications';
 
-export const NotificationContext = createContext<{
+export interface NotificationContextType {
   notifications: AppNotification[];
   count: number;
   hasMore: boolean;
@@ -10,7 +10,9 @@ export const NotificationContext = createContext<{
   isLoading: boolean;
   getMore: () => void;
   clear: () => void;
-}>({
+};
+
+export const NotificationContext = createContext<NotificationContextType>({
   notifications: [],
   count: 0,
   hasMore: false,

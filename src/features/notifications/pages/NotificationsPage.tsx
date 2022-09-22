@@ -10,23 +10,18 @@ import { Badge, Button, Card, Col, Container, Row } from 'react-bootstrap';
 import { Trans } from 'react-i18next';
 import * as NotificationComponents from '../components';
 import { NotificationContext } from '../context';
+import { NotificationListViewNew } from './NotificationListViewNew';
 
 export const NotificationsPage: FC = () => {
-  // const {
-  //   notifications,
-  //   hasMore,
-  //   isFetching,
-  //   isLoading: isNotificationsLoading,
-  //   getMore,
-  //   clear,
-  // } = useContext(NotificationContext);
+  
+  const unreadNotificationsContext = useContext(NotificationContext);
 
   const [tab, setTab] = useState('unread');
   const [markAllRead, { isLoading }] = useMarkAllReadMutation();
 
   const markRead = async () => {
     await markAllRead();
-    // clear();
+    unreadNotificationsContext.clear();
   };
 
   return (
@@ -53,7 +48,7 @@ export const NotificationsPage: FC = () => {
             <PageNav.Link onClick={() => setTab('unread')} className={tab === 'unread' ? 'active' : ''}>
               Unread{' '}
               <Badge className='ms-1 me-2' pill bg='secondary'>
-                0
+                { unreadNotificationsContext.count }
               </Badge>
             </PageNav.Link>
             <PageNav.Link onClick={() => setTab('read')} className={tab === 'read' ? 'active' : ''}>
@@ -69,14 +64,14 @@ export const NotificationsPage: FC = () => {
           <>
             {tab === 'unread' ? (
               // unread listview
-              console.log('unread listview')
+              <NotificationListViewNew notificationContext={unreadNotificationsContext} />
             ) : (
               ''
             )}
 
             {tab === 'read' ? (
               // read listview
-              console.log('read listview')
+              <div>Read</div>
             ) : (
               ''
             )}
