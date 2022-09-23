@@ -19,9 +19,10 @@ export const NotificationsPage: FC = () => {
   const [tab, setTab] = useState('unread');
   const [markAllRead, { isLoading }] = useMarkAllReadMutation();
 
-  const markRead = async () => {
+  const handleMarkAllRead = async () => {
     await markAllRead();
     unreadNotificationsContext.clear();
+    readNotificationsContext.clear();
   };
 
   return (
@@ -36,7 +37,7 @@ export const NotificationsPage: FC = () => {
           </p>
         </div>
         <div>
-          <LoadingButton onClick={() => markRead()} loading={isLoading}>
+          <LoadingButton onClick={() => handleMarkAllRead()} loading={isLoading}>
             Mark all Read
           </LoadingButton>
         </div>

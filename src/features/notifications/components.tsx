@@ -1,7 +1,9 @@
+import { useMarkReadMutation } from 'common/api/notificationApi';
 import { AppNotification } from 'common/models/notifications';
-import { FC } from 'react';
+import { FC, useContext } from 'react';
 import Moment from 'react-moment';
 import { Link } from 'react-router-dom';
+import { NotificationContext } from './context';
 
 export const AgentCreatedNotification: FC<{
   notification: AppNotification;
@@ -11,6 +13,15 @@ export const AgentCreatedNotification: FC<{
     agentId: number;
     userName: string;
     agentName: string;
+  }
+
+  const [markRead] = useMarkReadMutation();
+  const { unreadNotificationsContext, readNotificationsContext } = useContext(NotificationContext);
+
+  const handleMarkRead = async () => {
+    await markRead(notification.id);
+    unreadNotificationsContext.clear();
+    readNotificationsContext.clear();
   }
 
   const isAgentCreatedNotificationData = (data: unknown): data is AgentCreatedData => {
@@ -29,8 +40,8 @@ export const AgentCreatedNotification: FC<{
           {notification.created}
         </Moment>
       </p>
-      <Link to={`/users/update-user/${data.userId}`}>{data.userName}</Link> created a new agent named{' '}
-      <Link to={`/agents/update-agent/${data.agentId}`}>{data.agentName}</Link>
+      <Link to={`/users/update-user/${data.userId}`} onClick={() => handleMarkRead()}>{data.userName}</Link> created a new agent named{' '}
+      <Link to={`/agents/update-agent/${data.agentId}`} onClick={() => handleMarkRead()}>{data.agentName}</Link>
     </div>
   );
 };

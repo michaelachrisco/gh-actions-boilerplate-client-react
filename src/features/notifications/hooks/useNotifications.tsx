@@ -71,10 +71,14 @@ export const useNotifications = (type: string) => {
     return { notifications: readNotifications, isFetching: isFetchingReadNotifications, isLoading: isLoadingReadNotifications };
   }
 
+  const notifications = getNotificationValuesBasedOnType(type).notifications;
+  const isFetching = getNotificationValuesBasedOnType(type).isFetching;
+  const isLoading = getNotificationValuesBasedOnType(type).isLoading;
+
   // Append new notifications that we got from the API to
   // oldNotifications list
   useEffect(() => {
-    notificationDispatch({ type: 'received new notifications', fetchedNotifications: getNotificationValuesBasedOnType(type).notifications?.results || [] });
+    notificationDispatch({ type: 'received new notifications', fetchedNotifications: notifications?.results || [] });
   }, [unreadNotifications, readNotifications]);
 
   // Set up receiving SSE events from the server.
@@ -111,10 +115,6 @@ export const useNotifications = (type: string) => {
     };
   }, [user]);
 
-  const notifications = getNotificationValuesBasedOnType(type).notifications;
-  const isFetching = getNotificationValuesBasedOnType(type).isFetching;
-  const isLoading = getNotificationValuesBasedOnType(type).isLoading;
-
   const notificationProviderValue = useMemo(() => {
     console.log('RE-EVALUATE');
 
@@ -135,7 +135,7 @@ export const useNotifications = (type: string) => {
         }
       },
     };
-    console.log(result);
+    console.log({ ...result, type });
     return result;
   }, [notifications, isFetching, isLoading, notificationState.notifications, notificationState.oldNotifications]);
 
