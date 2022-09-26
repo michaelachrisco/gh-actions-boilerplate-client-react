@@ -21,6 +21,7 @@ import dark from 'themes/dark';
 import { NetworkDetector } from 'features/network-detector/components/NetworkDetector';
 import { ModalProvider } from 'react-modal-hook';
 import { TransitionGroup } from 'react-transition-group';
+import { notificationApi } from 'common/api/notificationApi';
 
 export const ThemeContext = createContext({
   theme: 'light',
@@ -49,8 +50,9 @@ export const App: FC = () => {
       console.log('CLEAR');
       unreadNotificationsContext.clear();
       readNotificationsContext.clear();
+      notificationApi.util.resetApiState();
     }
-  }, [user]);
+  }, [user, unreadNotificationsContext, readNotificationsContext]);
 
   return (
     <AppErrorBoundary>

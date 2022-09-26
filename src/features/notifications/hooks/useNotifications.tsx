@@ -79,7 +79,7 @@ export const useNotifications = (type: string) => {
   // oldNotifications list
   useEffect(() => {
     notificationDispatch({ type: 'received new notifications', fetchedNotifications: notifications?.results || [] });
-  }, [unreadNotifications, readNotifications]);
+  }, [unreadNotifications, readNotifications, notifications?.results]);
 
   // Set up receiving SSE events from the server.
   useEffect(() => {
@@ -113,7 +113,7 @@ export const useNotifications = (type: string) => {
         eventSource = null;
       }
     };
-  }, [user]);
+  }, [user, type]);
 
   const notificationProviderValue = useMemo(() => {
     console.log('RE-EVALUATE');
@@ -126,7 +126,6 @@ export const useNotifications = (type: string) => {
       isLoading: isLoading,
       clear: () => {
         notificationDispatch({ type: 'clear' });
-        notificationApi.util.resetApiState();
         console.log('SETTING EVERYTHING TO NOTHING');
       },
       getMore: () => {
@@ -137,7 +136,7 @@ export const useNotifications = (type: string) => {
     };
     console.log({ ...result, type });
     return result;
-  }, [notifications, isFetching, isLoading, notificationState.notifications, notificationState.oldNotifications]);
+  }, [notifications, isFetching, isLoading, notificationState.notifications, notificationState.oldNotifications, getNotificationValuesBasedOnType, type]);
 
   return notificationProviderValue;
 };
