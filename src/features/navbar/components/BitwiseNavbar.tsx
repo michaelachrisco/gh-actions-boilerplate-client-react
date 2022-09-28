@@ -9,7 +9,7 @@ import { MoonIcon } from 'features/themes/MoonIcon';
 import { SunIcon } from 'features/themes/SunIcon';
 import { useTheme } from 'features/themes/useTheme';
 import { FC, useContext } from 'react';
-import { Badge, Button, Container, Modal, Navbar, NavDropdown, NavLink, Offcanvas } from 'react-bootstrap';
+import { Badge, Button, Container, Modal, Navbar, NavDropdown, NavItem, NavLink, Offcanvas } from 'react-bootstrap';
 import Nav from 'react-bootstrap/Nav';
 import { useTranslation } from 'react-i18next';
 import { useModal } from 'react-modal-hook';
@@ -156,6 +156,67 @@ const StyledNavbarOffcanvas = styled(Navbar.Offcanvas)`
   }
 `;
 
+const NotificationButton = styled(NavItem)`
+  cursor: pointer;
+
+  @media only screen and (max-width: 767px) {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    align-items: center;
+    padding: 1rem 0rem 1rem 1rem;
+
+    svg {
+      margin-right: 1rem;
+    }
+
+    #notification-label {
+      margin-right: 1rem;
+    }
+
+    #notification-counter {
+      margin-right: 1rem;
+      padding: 0.5rem 0.85rem;
+      background-color: ${props => props.theme.noticeBackgroundColor};
+      color: ${props => props.theme.noticeTextColor};
+      border-radius: 10px;
+    }
+  }
+
+  @media (min-width: 768px) {
+    width: 45px;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    margin-right: 1rem;
+
+    #notification-label {
+      display: none;
+    }
+
+    #notification-counter {
+      position: absolute;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      right: 0;
+      top: 0;
+      z-index: 1090;
+      background-color: ${props => props.theme.noticeBackgroundColor};
+      border-radius: 25px;
+      width: 23px;
+      height: 23px;
+    }
+
+    span {
+      color: ${props => props.theme.noticeTextColor};
+      font-size: 0.8rem;
+    }
+  }
+`;
+
 export const BitwiseNavbar: FC<Props> = ({ closeVerticalNav }) => {
   let dropdownLinks: NavLinkConfig[] = [];
 
@@ -255,15 +316,17 @@ export const BitwiseNavbar: FC<Props> = ({ closeVerticalNav }) => {
               ))}
             </NavDropdown>
 
-            <CustomNavLink
-              link={{
-                id: 99,
-                icon: 'bell',
-                label: count.toString(),
-                path: '/notifications',
-                // badge: count.toString()
-              }}
-            />
+            <NotificationButton onClick={() => navigate('/notifications')}>
+              <FontAwesomeIcon size='lg' icon='bell' />
+              <span id='notification-label'>Notifications</span>
+              {count > 0 ? (
+                <div>
+                  <span id='notification-counter'>
+                    {count > 9 ? '9+' : count.toString()}
+                  </span>
+                </div>
+              ) : null}
+            </NotificationButton>
 
             {user ? (
               <NavDropdown
