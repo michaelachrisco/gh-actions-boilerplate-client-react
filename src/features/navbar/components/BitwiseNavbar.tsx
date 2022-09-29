@@ -159,7 +159,7 @@ const StyledNavbarOffcanvas = styled(Navbar.Offcanvas)`
 export const BitwiseNavbar: FC<Props> = ({ closeVerticalNav }) => {
   let dropdownLinks: NavLinkConfig[] = [];
 
-  const { notifications } = useContext(NotificationContext);
+  const { count } = useContext(NotificationContext);
   const { user } = useAuth();
   const navLinks = useNavLinks();
   const navigate = useNavigate();
@@ -259,10 +259,11 @@ export const BitwiseNavbar: FC<Props> = ({ closeVerticalNav }) => {
               link={{
                 id: 99,
                 icon: 'bell',
-                label: notifications.length.toString(),
+                label: count.toString(),
                 path: '/notifications',
                 // badge: count.toString()
-              }} />
+              }}
+            />
 
             {user ? (
               <NavDropdown
