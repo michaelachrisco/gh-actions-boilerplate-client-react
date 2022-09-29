@@ -162,7 +162,6 @@ const NotificationButton = styled(NavItem)`
   @media only screen and (max-width: 767px) {
     display: flex;
     flex-direction: row;
-    width: 100%;
     align-items: center;
     padding: 1rem 0rem 1rem 1rem;
 
@@ -175,16 +174,15 @@ const NotificationButton = styled(NavItem)`
     }
 
     #notification-counter {
-      margin-right: 1rem;
       padding: 0.5rem 0.85rem;
       background-color: ${props => props.theme.noticeBackgroundColor};
       color: ${props => props.theme.noticeTextColor};
-      border-radius: 10px;
+      border-radius: 0.625rem;
     }
   }
 
   @media (min-width: 768px) {
-    width: 45px;
+    width: 2.813rem;
     position: relative;
     display: flex;
     flex-direction: column;
@@ -203,11 +201,11 @@ const NotificationButton = styled(NavItem)`
       align-items: center;
       right: 0;
       top: 0;
-      z-index: 1090;
+      z-index: 1070;
       background-color: ${props => props.theme.noticeBackgroundColor};
-      border-radius: 25px;
-      width: 23px;
-      height: 23px;
+      border-radius: 1.563rem;
+      width: 1.438rem;
+      height: 1.438rem;
     }
 
     span {
@@ -321,9 +319,7 @@ export const BitwiseNavbar: FC<Props> = ({ closeVerticalNav }) => {
               <span id='notification-label'>Notifications</span>
               {count > 0 ? (
                 <div>
-                  <span id='notification-counter'>
-                    {count > 9 ? '9+' : count.toString()}
-                  </span>
+                  <span id='notification-counter'>{count > 9 ? '9+' : count.toString()}</span>
                 </div>
               ) : null}
             </NotificationButton>
