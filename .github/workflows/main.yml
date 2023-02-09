@@ -29,6 +29,11 @@ jobs:
     - name: Build and Lint
       run: yarn build
 
+    - name: Test Frontend
+      run: |
+            export CI=true
+            yarn test-ci
+
     # - name: Build project
     #   run: npm run build
 
